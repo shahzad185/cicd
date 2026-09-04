@@ -7,7 +7,9 @@ describe("<App />", () => {
   it("renders the heading", () => {
     render(<App />);
     expect(
-      screen.getByRole("heading", { name: /ci\/cd beginner/i }),
+      screen.getByRole("heading", {
+        name: /completely different title to break test 123/i,
+      }),
     ).toBeInTheDocument();
   });
 
