@@ -24,10 +24,7 @@ export default [
       react: { version: "detect" },
     },
     rules: {
-      "no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^React$" },
-      ],
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^React$" }],
       "no-undef": "error",
       "prefer-const": "error",
       eqeqeq: ["error", "always"],

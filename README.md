@@ -23,10 +23,13 @@ Uses npm **workspaces** so one `npm ci` at the root installs everything.
 
 ```powershell
 # From the repo root
-npm install          # installs both workspaces
-npm run lint         # lints client + server
-npm test             # runs all tests
-npm run build        # builds the client
+npm install           # installs both workspaces
+npm run format:check  # verify code style (Prettier)
+npm run format        # auto-format all files
+npm run lint          # lints client + server
+npm test              # runs all tests
+npm run test:coverage # runs tests + coverage report (client)
+npm run build         # builds the client
 ```
 
 Run individual workspaces:
@@ -79,18 +82,20 @@ This enforces "no red PRs get merged" — the core CI discipline.
 
 Open [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
 
-| Piece                                     | Purpose                                                    |
-| ----------------------------------------- | ---------------------------------------------------------- |
-| `on: push` / `pull_request`               | When the pipeline runs                                     |
-| `concurrency`                             | Cancel superseded runs on the same branch                  |
-| `strategy.matrix.node-version`            | Run the same job on Node 20 **and** 22 in parallel         |
-| `actions/checkout@v4`                     | Pulls your code into the runner                            |
-| `actions/setup-node@v4` with `cache: npm` | Installs Node and caches `~/.npm` for faster runs          |
-| `npm ci`                                  | Reproducible install from `package-lock.json`              |
-| `actions/upload-artifact@v4`              | Saves the built client so you can download it from the run |
+| Piece                                     | Purpose                                                  |
+| ----------------------------------------- | -------------------------------------------------------- |
+| `on: push` / `pull_request`               | When the pipeline runs                                   |
+| `concurrency`                             | Cancel superseded runs on the same branch                |
+| `actions/checkout@v4`                     | Pulls your code into the runner                          |
+| `actions/setup-node@v4` with `cache: npm` | Installs Node and caches `~/.npm` for faster runs        |
+| `npm ci`                                  | Reproducible install from `package-lock.json`            |
+| `npm run format:check`                    | Prettier fails the build if any file is unformatted      |
+| `npm run lint`                            | ESLint fails the build on lint errors                    |
+| `npm run test:coverage`                   | Runs tests **and** writes a coverage report              |
+| `actions/upload-artifact@v4`              | Uploads `client/dist` and `client/coverage` as downloads |
 
 ## Next steps
 
-- Add a **coverage** step (`vitest run --coverage`) and upload the report as an artifact.
-- Add a **format** check with Prettier (`prettier --check .`).
 - Move to track 2: build a Docker image and push it to GitHub Container Registry.
+- Add a **coverage threshold** in `vite.config.js` (e.g. fail if coverage drops below 80%).
+- Add **server coverage** with `node --test --experimental-test-coverage`.
