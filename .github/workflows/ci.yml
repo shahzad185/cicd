@@ -1,14 +1,15 @@
 name: CI
-
-on:
+# Continuous Integration workflow for the project
+# This workflow runs linting, testing, and building for the project on Node.js versions 20.x and 22.x.
+on: 
   push:
-    branches: [main]
+    branches: [main] # Trigger CI on pushes to the main branch
   pull_request:
-    branches: [main]
+    branches: [main] # Trigger CI on pull requests targeting the main branch
 
 # Cancel older in-progress runs on the same ref (saves CI minutes)
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }} 
   cancel-in-progress: true
 
 jobs:

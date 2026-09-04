@@ -5,7 +5,7 @@ export default function App() {
 
   return (
     <main style={{ fontFamily: "system-ui", padding: "2rem" }}>
-      <h1>CI/CD Beginner</h1>
+      <h1>CI/CD Beginner broken</h1>
       <p>Clicked {count} times</p>
       <button onClick={() => setCount((c) => c + 1)}>Increment</button>
     </main>
